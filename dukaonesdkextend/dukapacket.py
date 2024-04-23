@@ -24,6 +24,7 @@ class DukaPacket:
         FAN1RPM = 0x4A
         FILTER_TIMER = 0x64
         RESET_FILTER_TIMER = 0x65
+        SCHEDULE_MODE = 0x72
         SEARCH = 0x7C
         RESET_ALARMS = 0x80
         READ_ALARM = 0x83
@@ -62,6 +63,22 @@ class DukaPacket:
         self.__add_byte(manualspeed)
         self.__add_checksum()
 
+    def initialize_schedulemode_on_cmd(self, device: Device):
+        """Intialize a schedulemode on command packet to be sent to a device"""
+        self.__build_data(device.device_id, device.password)
+        self.__add_byte(DukaPacket.Func.WRITEREAD.value)
+        self.__add_byte(DukaPacket.Parameters.SCHEDULE_MODE.value)
+        self.__add_byte(0x01)
+        self.__add_checksum()
+
+    def initialize_schedulemode_off_cmd(self, device: Device):
+        """Intialize a schedulemode on command packet to be sent to a device"""
+        self.__build_data(device.device_id, device.password)
+        self.__add_byte(DukaPacket.Func.WRITEREAD.value)
+        self.__add_byte(DukaPacket.Parameters.SCHEDULE_MODE.value)
+        self.__add_byte(0x00)
+        self.__add_checksum()
+
     def initialize_mode_cmd(self, device: Device, mode: Mode):
         """Intialize a mode command packet to be sent to a device"""
         self.__build_data(device.device_id, device.password)
@@ -98,6 +115,7 @@ class DukaPacket:
         self.__add_byte(self.Parameters.FILTER_ALARM.value)
         self.__add_byte(self.Parameters.FILTER_TIMER.value)
         self.__add_byte(self.Parameters.CURRENT_HUMIDITY.value)
+        self.__add_byte(self.Parameters.SCHEDULE_MODE.value)
         self.__add_checksum()
 
     def initialize_reset_filter_alarm_cmd(self, device: Device):

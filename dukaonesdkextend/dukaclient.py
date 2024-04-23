@@ -116,7 +116,7 @@ class DukaClient:
             return
         packet = DukaPacket()
         packet.initialize_on_cmd(device)
-        data = packet.data
+        data = packet.dataa
         self.__send_data(device, data)
 
     def set_mode(self, device: Device, mode: Mode):
@@ -125,6 +125,24 @@ class DukaClient:
             return
         packet = DukaPacket()
         packet.initialize_mode_cmd(device, mode)
+        data = packet.data
+        self.__send_data(device, data)
+
+    def set_schedule_on(self, device: Device):
+        """Set the mode of the specified device"""
+        if device._schedulemode == True:
+            return
+        packet = DukaPacket()
+        packet.initialize_schedulemode_on_cmd(device)
+        data = packet.data
+        self.__send_data(device, data)
+
+    def set_schedule_off(self, device: Device):
+        """Set the mode of the specified device"""
+        if device._schedulemode == False:
+            return
+        packet = DukaPacket()
+        packet.initialize_schedulemode_off_cmd(device)
         data = packet.data
         self.__send_data(device, data)
 
@@ -291,6 +309,9 @@ class DukaClient:
             haschange = True
         if packet.mode is not None and packet.mode != device._mode:
             device._mode = packet.mode
+            haschange = True
+        if packet.schedulemode is not None and packet.schedulemode != device._schedulemode:
+            device._schedulemode = packet.schedulemode
             haschange = True
         if (
             packet.filter_alarm is not None

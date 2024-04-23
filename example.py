@@ -6,8 +6,8 @@ You can see the duka one device id in the duka one app.
 import sys
 import time
 
-from dukaonesdk.dukaclient import DukaClient
-from dukaonesdk.device import Device, Mode
+from dukaonesdkextend.dukaclient import DukaClient
+from dukaonesdkextend.device import Device, Mode
 
 
 def onchange(device: Device):
@@ -18,6 +18,7 @@ def onchange(device: Device):
         f" manualspeed: {device.manualspeed},"
         f" fan1rpm: {device.fan1rpm},"
         f" mode: {device.mode},"
+        f" schedulemode: {device._schedulemode},"
         f" humidity: {device.humidity},"
         f" filter alarm: {device.filter_alarm},"
         f" filter timer; {device.filter_timer} minutes"
@@ -37,13 +38,15 @@ def main():
     # read the device id
     with open(".deviceid", "r") as file:
         device_id = file.readline().replace("\n", "")
+        device_pass = file.readline().replace("\n", "")
+        device_ip = file.readline().replace("\n", "")
     # initialize the DukaClient and add the device
-    mydevice: Device = client.validate_device(device_id, ip_address="192.168.1.255")
+    mydevice: Device = client.validate_device(device_id, password=device_pass, ip_address=device_ip)
     if mydevice is None:
         print("Device does not respond")
     else:
         mydevice = client.add_device(
-            device_id, ip_address=mydevice.ip_address, onchange=onchange
+            device_id, ip_address=mydevice.ip_address, password="0243", onchange=onchange
         )
         print("Device added")
 
@@ -72,6 +75,10 @@ def main():
                 client.set_mode(mydevice, Mode.TWOWAY)
             if char == "m":
                 client.set_mode(mydevice, Mode.IN)
+            if char == "a":
+                client.set_schedule_on(mydevice)
+            if char == "s":
+                client.set_schedule_off(mydevice)
             if char == "f":
                 client.reset_filter_alarm(mydevice)
 

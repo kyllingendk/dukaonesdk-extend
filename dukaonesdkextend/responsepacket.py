@@ -59,6 +59,7 @@ class ResponsePacket(DukaPacket):
         self.device_password = None
         self.is_on = None
         self.speed: Speed = None
+        self.schedulemode = None
         self.manualspeed = None
         self.fan1rpm = None
         self.humidity = None
@@ -124,6 +125,8 @@ class ResponsePacket(DukaPacket):
                 size = self.parameter_size[parameter]
             if parameter == self.Parameters.ON_OFF.value:
                 self.is_on = self._data[self._pos] != 0
+            elif parameter == self.Parameters.SCHEDULE_MODE.value:
+                self.schedulemode = self._data[self._pos] != 0
             elif parameter == self.Parameters.SPEED.value:
                 self.speed = self._data[self._pos]
             elif parameter == self.Parameters.MANUAL_SPEED.value:

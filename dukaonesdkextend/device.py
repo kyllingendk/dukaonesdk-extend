@@ -19,6 +19,7 @@ class Device:
         self._ip_address = ip_address
         self._speed: Speed = None
         self._mode: Mode = None
+        self._schedulemode = None
         self._manualspeed: int = None
         self._fan1rpm: int = None
         self._humidity: int = None
@@ -65,6 +66,11 @@ class Device:
     def mode(self) -> Mode:
         """Return the mode of the device"""
         return self._mode
+
+    @property
+    def schedulemode(self) -> bool:
+        """Return the schedulemode of the device"""
+        return self._schedulemode
 
     @property
     def filter_alarm(self) -> bool:
