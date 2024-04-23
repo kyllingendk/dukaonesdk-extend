@@ -6,8 +6,8 @@ You can see the duka one device id in the duka one app.
 import sys
 import time
 
-from dukaonesdkextend.dukaclient import DukaClient
-from dukaonesdkextend.device import Device, Mode
+from dukaonesdk_extend.dukaclient import DukaClient
+from dukaonesdk_extend.device import Device, Mode
 
 
 def onchange(device: Device):
