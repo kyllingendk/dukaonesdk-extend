@@ -4,7 +4,7 @@ Setup of the dukaonesdk module
 from setuptools import setup
 
 setup(
-    name="dukaonesdk",
+    name="dukaonesdk-extend",
     version="1.1.0",
     description="Duka One ventilation SDK entended",
     long_description=(
